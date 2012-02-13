@@ -3,19 +3,22 @@ import time
 import urlparse
 import copy
 
-class Event:
+__all__ = ['LogEvent']
+
+class LogEvent(object):
 
     def __init__(self):
-        self.cancelled = false
+        self.cancelled = False
         self.data = { "@source": "unknown", 
                       "@type": None,
                       "@tags": (),
                       "@fields": {},
-                      "@timestamp": time.strftime("%Y-%m-%dT%H:%M:%S",time.time())
+                      "@timestamp": time.strftime("%Y-%m-%dT%H:%M:%S",time.gmtime()),
+                      "@message": None
                      }
 
-    def __init__(self, json_obj):
-        self.cancelled = false
+    def loadJson(self, json_obj):
+        self.cancelled = False
         self.data = json.loads(json_obj)
 
     def cancel(self):
@@ -77,7 +80,7 @@ class Event:
         return json.dumps(self.data)
 
     def get(self, key):
-        if ! key in self.data["@fields"] and key[0] == '@':
+        if key not in self.data["@fields"] and key[0] == '@':
             return self.data[key]
         else:
             return self.data["@fields"][key]
@@ -101,7 +104,7 @@ class Event:
         if self.__class__ == other._class__:
             return hash(self) == hash(other)
         else:
-            return false
+            return False
 
         
 
