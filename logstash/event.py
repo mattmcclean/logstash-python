@@ -3,7 +3,7 @@ import time
 import urlparse
 import copy
 
-class LogEvent(object):
+class Event(object):
 
     def __init__(self, json_obj = None):
         self.cancelled = False

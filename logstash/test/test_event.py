@@ -1,13 +1,13 @@
 import unittest
 import json
 import time
-from logstash import LogEvent
+from logstash.event import Event
 
 class Test(unittest.TestCase):
     """Unit tests for logstash."""
 
     def test_create_new_event(self):
-        event = LogEvent()
+        event = Event()
         
         self.assertEqual(event.getsource(), 'unknown')
         self.assertEqual(event.gettags(), [])
@@ -27,7 +27,7 @@ class Test(unittest.TestCase):
                  "@timestamp" : time.strftime("%Y-%m-%dT%H:%M:%S",now),
                  "@message" : "This is the message"
                 })
-        event = LogEvent(data)
+        event = Event(data)
         self.assertEqual(event.getsource(), 'test01.example.com')
         self.assertEqual(event.gettags(), ['tag1', 'tag2', 'tag3'])
         self.assertEqual(event.getfields(), { "key1" : "field1",
@@ -51,7 +51,7 @@ class Test(unittest.TestCase):
                  "@timestamp" : time.strftime("%Y-%m-%dT%H:%M:%S",now),
                  "@message" : "This is the message"
                 })
-        event = LogEvent(data)
+        event = Event(data)
         self.assertEqual(event.get("@source"), 'test01.example.com')
         self.assertEqual(event.get("@tags"), ['tag1', 'tag2', 'tag3'])
         self.assertEqual(event.get("key1"), "field1")
@@ -62,14 +62,14 @@ class Test(unittest.TestCase):
         self.assertEqual(event.get("@message"), "This is the message")
 
     def test_set_source(self):
-        event = LogEvent()
+        event = Event()
         event.setsource("http://www.example.com/some/path")
 
         self.assertEqual(event.get("@source"), "http://www.example.com/some/path")
         self.assertEqual(event.get("@source_host"), "www.example.com")
         self.assertEqual(event.get("@source_path"), "/some/path")
 
-        event = LogEvent()
+        event = Event()
         event.setsource("www.example.com")
         self.assertEqual(event.get("@source"), "www.example.com")
         self.assertEqual(event.get("@source_host"), "www.example.com")

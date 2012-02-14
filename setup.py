@@ -2,10 +2,13 @@
 
 from distutils.core import setup
 
-setup(name='Logstash',
+setup(name='logstash',
       version='0.1dev',
       description='Python library for Logstash',
       author='Matt McClean',
       author_email='matt.mcclean@gmail.com',
-      packages=['logstash',],
+      packages=['logstash', 'logstash.test'],
+      license='LICENSE.txt',
+      description='Python library for Logstash.',
+      long_description=open('README.txt').read(),
      )
