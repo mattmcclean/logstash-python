@@ -3,38 +3,35 @@ import time
 import urlparse
 import copy
 
-__all__ = ['LogEvent']
-
 class LogEvent(object):
 
-    def __init__(self):
+    def __init__(self, json_obj = None):
         self.cancelled = False
-        self.data = { "@source": "unknown", 
-                      "@type": None,
-                      "@tags": (),
-                      "@fields": {},
-                      "@timestamp": time.strftime("%Y-%m-%dT%H:%M:%S",time.gmtime()),
-                      "@message": None
-                     }
-
-    def loadJson(self, json_obj):
-        self.cancelled = False
-        self.data = json.loads(json_obj)
+        if json_obj is None:
+            self.data = { "@source": "unknown", 
+                          "@type": None,
+                          "@tags": [],
+                          "@fields": {},
+                          "@timestamp": time.strftime("%Y-%m-%dT%H:%M:%S",time.gmtime()),
+                          "@message": None
+                          }
+        else:
+            self.data = json.loads(json_obj)
 
     def cancel(self):
         self.cancelled = true
 
-    def isCancelled(self):
+    def is_cancelled(self):
         return self.cancelled
 
     def __str__(self):
         return self.data["@timestamp"] + "," + self.data["@source"] + "," + self.data["@message"]
 
-    def source(self):
+    def getsource(self):
         return self.data["@source"]
 
-    def source(self, source):
-        val = urlparse(source)
+    def setsource(self, source):
+        val = urlparse.urlparse(source)
         if (val.scheme != ''):
             self.data["@source"] = val.geturl()
             self.data["@source_host"] = val.netloc
@@ -43,28 +40,28 @@ class LogEvent(object):
             self.data["@source"] = source
             self.data["@source_host"] = source
 
-    def timestamp(self):
+    def gettimestamp(self):
         return self.data["@timestamp"]
 
-    def timestamp(self, val):
+    def settimestamp(self, val):
         self.data["@timestamp"] = val
 
-    def message(self):
+    def getmessage(self):
         return self.data["@message"]
     
-    def message(self, val):
+    def setmessage(self, val):
         self.data["@message"] = val
 
-    def type(self):
+    def gettype(self):
         return self.data["@type"]
 
-    def type(self, val):
+    def settype(self, val):
         self.data["@type"] = val
 
-    def tags(self):
+    def gettags(self):
         return self.data["@tags"]
     
-    def tags(self, val):
+    def settags(self, val):
         self.data["@tags"] = val
 
     def overwrite(self, event):
@@ -73,7 +70,7 @@ class LogEvent(object):
     def __hash__(self):
         return hash(data)
 
-    def fields(self):
+    def getfields(self):
         return self.data["@fields"]
 
     def to_json(self):
