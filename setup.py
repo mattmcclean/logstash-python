@@ -9,6 +9,5 @@ setup(name='logstash',
       author_email='matt.mcclean@gmail.com',
       packages=['logstash', 'logstash.test'],
       license='LICENSE.txt',
-      description='Python library for Logstash.',
       long_description=open('README.txt').read(),
      )
