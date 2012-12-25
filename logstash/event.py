@@ -1,25 +1,26 @@
 import json
 import time
 import urlparse
-import copy
+
 
 class Event(object):
 
-    def __init__(self, json_obj = None):
+    def __init__(self, json_obj=None):
         self.cancelled = False
         if json_obj is None:
-            self.data = { "@source": "unknown", 
-                          "@type": None,
-                          "@tags": [],
-                          "@fields": {},
-                          "@timestamp": time.strftime("%Y-%m-%dT%H:%M:%S",time.gmtime()),
-                          "@message": None
-                          }
+            self.data = {
+                "@source": "unknown",
+                "@type": None,
+                "@tags": [],
+                "@fields": {},
+                "@timestamp": time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime()),
+                "@message": None
+            }
         else:
             self.data = json.loads(json_obj)
 
     def cancel(self):
-        self.cancelled = true
+        self.cancelled = True
 
     def is_cancelled(self):
         return self.cancelled
@@ -48,7 +49,7 @@ class Event(object):
 
     def getmessage(self):
         return self.data["@message"]
-    
+
     def setmessage(self, val):
         self.data["@message"] = val
 
@@ -60,7 +61,7 @@ class Event(object):
 
     def gettags(self):
         return self.data["@tags"]
-    
+
     def settags(self, val):
         self.data["@tags"] = val
 
@@ -68,7 +69,7 @@ class Event(object):
         self.data = hash(event)
 
     def __hash__(self):
-        return hash(data)
+        return hash(self.data)
 
     def getfields(self):
         return self.data["@fields"]
@@ -102,9 +103,3 @@ class Event(object):
             return hash(self) == hash(other)
         else:
             return False
-
-        
-
-   
-          
-        
